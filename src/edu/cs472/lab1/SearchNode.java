@@ -89,62 +89,15 @@ public class SearchNode
     public List<SearchNode> expandNode()
     {
         this.contents = Utilities.getFileContents(nodeURL);
-
-        // StringTokenizer's are a nice class built into Java.
-        // Be sure to read about them in some Java documentation.
-        // They are useful when one wants to break up a string into words (tokens).
-        StringTokenizer st = new StringTokenizer(contents);
-
         List<SearchNode> children = new ArrayList<SearchNode>();
-        while (st.hasMoreTokens()) {
-            String token = st.nextToken();
 
-            // Look for the hyperlinks on the current page.
-
-            // (Lots a print statments and error checks are in here,
-            // both as a form of documentation and as a debugging tool should you
-            // create your own intranets.)
-
-            // At the start of some hypertext? Otherwise, ignore this token.
-            if (token.equalsIgnoreCase("<A")) {
-                String hyperlink; // The name of the child node.
-
-                // Read: HREF = page#.html >
-
-                token = st.nextToken();
-                if (!token.equalsIgnoreCase("HREF")) {
-                    System.out.println("Expecting 'HREF' and got: " + token);
-                }
-
-                token = st.nextToken();
-                if (!token.equalsIgnoreCase("=")) {
-                    System.out.println("Expecting '=' and got: " + token);
-                }
-
-                // Now we should be at the name of file being linked to.
-                hyperlink = st.nextToken();
-                if (!hyperlink.startsWith("page")) {
-                    System.out.println("Expecting 'page#.html' and got: "
-                            + hyperlink);
-                }
-
-                token = st.nextToken();
-                if (!token.equalsIgnoreCase(">")) {
-                    System.out.println("Expecting '>' and got: " + token);
-                }
-
-                String hypertext = ""; // The text associated with this hyperlink.
-
-                do {
-                    token = st.nextToken();
-                    if (!token.equalsIgnoreCase("</A>"))
-                        hypertext += " " + token;
-                } while (!token.equalsIgnoreCase("</A>"));
-
-                String parentPath = new File(nodeURL).getParent();
-                String newNodeURL = new File(parentPath, hyperlink).getPath();
-                children.add(new SearchNode(newNodeURL, hypertext, this));
-            }
+        for (String[] data : Utilities.getHyperlinksFromHTML(contents)) {
+            String hyperlink = data[0];
+            String hypertext = data[1];
+            
+            String parentPath = new File(nodeURL).getParent();
+            String newNodeURL = new File(parentPath, hyperlink).getPath();
+            children.add(new SearchNode(newNodeURL, hypertext, this));
         }
 
         return children;
