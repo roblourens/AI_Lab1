@@ -1,10 +1,19 @@
 package edu.cs472.lab1;
 
-import java.util.LinkedList;
+import java.util.Collection;
 
 public abstract class SearchNodeSet
 {
-    protected LinkedList<SearchNode> nodes = new LinkedList<SearchNode>();
+    protected Collection<SearchNode> nodes;
+    
+    /**
+     * Constructs this search node set with the provided storage Collection
+     * @param nodes Some Collection for node storage
+     */
+    public SearchNodeSet(Collection<SearchNode> nodes)
+    {
+        this.nodes = nodes;
+    }
 
     public boolean containsURL(String url)
     {

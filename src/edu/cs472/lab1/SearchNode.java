@@ -3,7 +3,6 @@ package edu.cs472.lab1;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 public class SearchNode
 {
