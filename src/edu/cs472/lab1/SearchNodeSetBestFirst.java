@@ -13,9 +13,9 @@ import java.util.Queue;
 public class SearchNodeSetBestFirst extends SearchNodeSet
 {
     Queue<SearchNode> q;
-    
+
     final static int INITIAL_SIZE = 100;
-    
+
     public SearchNodeSetBestFirst(Comparator<SearchNode> c)
     {
         super(new PriorityQueue<SearchNode>(INITIAL_SIZE, c));

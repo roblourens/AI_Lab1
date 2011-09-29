@@ -6,8 +6,6 @@ import java.util.List;
 
 public class SearchNode
 {
-    // TODO getHValue
-
     /**
      * The URL that this node represents (entire path including file name)
      */
@@ -34,9 +32,19 @@ public class SearchNode
     private final int depth;
 
     /**
-     * The contents of the file represented by this node
+     * The HTML contents of the file represented by this node
      */
     private String contents;
+
+    /**
+     * The non-HTML text of the file
+     */
+    private String textContents;
+
+    /**
+     * The child nodes of this SearchNode
+     */
+    private List<SearchNode> children;
 
     public SearchNode(String nodeName)
     {
@@ -47,7 +55,7 @@ public class SearchNode
     {
         this.nodeURL = nodeURL;
         this.nodeName = new File(nodeURL).getName();
-        this.hypertext = hypertext;
+        this.hypertext = Utilities.normalizeSearchString(hypertext);
         this.parent = parent;
         this.depth = parent == null ? 0 : parent.getDepth() + 1;
     }
@@ -85,21 +93,28 @@ public class SearchNode
      * 
      * @return new children
      */
-    public List<SearchNode> expandNode()
+    private void expandNode()
     {
-        this.contents = Utilities.getFileContents(nodeURL);
-        List<SearchNode> children = new ArrayList<SearchNode>();
+        if (contents == null) {
+            contents = Utilities.getFileContents(nodeURL);
 
-        for (String[] data : Utilities.getHyperlinksFromHTML(contents)) {
-            String hyperlink = data[0];
-            String hypertext = data[1];
-            
-            String parentPath = new File(nodeURL).getParent();
-            String newNodeURL = new File(parentPath, hyperlink).getPath();
-            children.add(new SearchNode(newNodeURL, hypertext, this));
+            List<SearchNode> children = new ArrayList<SearchNode>();
+            StringBuilder textContents = new StringBuilder();
+
+            for (String[] data : Utilities.getHyperlinksFromHTML(getContents(),
+                    textContents)) {
+                String hyperlink = data[0];
+                String hypertext = data[1];
+
+                String parentPath = new File(nodeURL).getParent();
+                String newNodeURL = new File(parentPath, hyperlink).getPath();
+                children.add(new SearchNode(newNodeURL, hypertext, this));
+            }
+
+            this.children = children;
+            this.textContents = Utilities.normalizeSearchString(textContents
+                    .toString());
         }
-
-        return children;
     }
 
     public String getNodeURL()
@@ -158,5 +173,23 @@ public class SearchNode
     public String getNodeName()
     {
         return nodeName;
+    }
+
+    public String getContents()
+    {
+        expandNode();
+        return contents;
+    }
+
+    public String getTextContents()
+    {
+        expandNode();
+        return textContents;
+    }
+
+    public List<SearchNode> getChildren()
+    {
+        expandNode();
+        return children;
     }
 }

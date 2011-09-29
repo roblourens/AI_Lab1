@@ -8,10 +8,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-// Some 'helper' functions follow. You needn't understand their internal details.
+// Some 'helper' functions follow. You needn't understand their internal
+// details.
 // Feel free to move this to a separate Java file if you wish.
-class Utilities
+public class Utilities
 {
+    public static String joinArraySlice(String[] arr, int from, int to,
+            String delimiter)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int i = from; i < to; i++) {
+            sb.append(arr[i]);
+            if (i != to - 1)
+                sb.append(delimiter);
+        }
+
+        return sb.toString();
+    }
+
+    public static String normalizeSearchString(String s)
+    {
+        if (s != null) {
+            s = s.replaceAll("\\W", " ");
+            s = s.replaceAll("\\s+", " ");
+            s = s.trim();
+        }
+
+        return s;
+    }
+
     // In J++, the console window can close up before you read it,
     // so this method can be used to wait until you're ready to proceed.
     public static void waitHere(String msg)
@@ -50,12 +75,14 @@ class Utilities
 
         return results;
     }
-    
-    public static List<String[]> getHyperlinksFromHTML(String contents)
+
+    public static List<String[]> getHyperlinksFromHTML(String contents,
+            StringBuilder textContents)
     {
         // StringTokenizer's are a nice class built into Java.
         // Be sure to read about them in some Java documentation.
-        // They are useful when one wants to break up a string into words (tokens).
+        // They are useful when one wants to break up a string into words
+        // (tokens).
         StringTokenizer st = new StringTokenizer(contents);
 
         List<String[]> links = new ArrayList<String[]>();
@@ -65,7 +92,8 @@ class Utilities
             // Look for the hyperlinks on the current page.
 
             // (Lots a print statments and error checks are in here,
-            // both as a form of documentation and as a debugging tool should you
+            // both as a form of documentation and as a debugging tool should
+            // you
             // create your own intranets.)
 
             // At the start of some hypertext? Otherwise, ignore this token.
@@ -96,18 +124,24 @@ class Utilities
                     System.out.println("Expecting '>' and got: " + token);
                 }
 
-                String hypertext = ""; // The text associated with this hyperlink.
+                String hypertext = ""; // The text associated with this
+                                       // hyperlink.
 
                 do {
                     token = st.nextToken();
                     if (!token.equalsIgnoreCase("</A>"))
                         hypertext += " " + token;
                 } while (!token.equalsIgnoreCase("</A>"));
-                
-                links.add(new String[] {hyperlink, hypertext});
+
+                links.add(new String[] { hyperlink, hypertext });
+            }
+            else
+            {
+                textContents.append(token);
+                textContents.append(" ");
             }
         }
-        
+
         return links;
     }
 }

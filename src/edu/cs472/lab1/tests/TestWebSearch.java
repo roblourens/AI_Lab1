@@ -21,6 +21,7 @@ public class TestWebSearch
                 .println("*********************************************************************");
     }
 
+    // 1, 18, 29, 99, 50
     @Test
     public void testBF()
     {
@@ -33,6 +34,13 @@ public class TestWebSearch
     public void testDF()
     {
         ws = new WebSearch("QUERY1 QUERY2 QUERY3 QUERY4", SearchStrategy.DEPTH);
+        ws.performSearch(START);
+    }
+    
+    @Test
+    public void testBest()
+    {
+        ws = new WebSearch("QUERY1 QUERY2 QUERY3 QUERY4", SearchStrategy.BEST);
         ws.performSearch(START);
     }
 }

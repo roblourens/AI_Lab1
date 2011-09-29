@@ -3,6 +3,9 @@ package edu.cs472.lab1;
 import java.util.HashSet;
 import java.util.List;
 
+import edu.cs472.lab1.heuristics.AggregateHeuristic;
+import edu.cs472.lab1.heuristics.SearchHeuristicComparator;
+
 // You should call this code as follows:
 //
 // java WebSearch searchStrategyName
@@ -34,6 +37,9 @@ public class WebSearch
     // The setSize() method in the Vector
     // class can be used to accomplish this.
 
+    /**
+     * Searching for the page with this exact String
+     */
     final String GOAL_PATTERN;
 
     final SearchStrategy SEARCH_STRATEGY;
@@ -82,7 +88,7 @@ public class WebSearch
     public WebSearch(String goalPattern, SearchStrategy searchStrategy)
     {
         this.SEARCH_STRATEGY = searchStrategy;
-        this.GOAL_PATTERN = goalPattern;
+        this.GOAL_PATTERN = Utilities.normalizeSearchString(goalPattern);
     }
 
     public void performSearch(String startURL)
@@ -95,6 +101,10 @@ public class WebSearch
             break;
         case DEPTH:
             OPEN = new SearchNodeSetDF();
+            break;
+        case BEST:
+            OPEN = new SearchNodeSetBestFirst(new SearchHeuristicComparator(
+                    new AggregateHeuristic(GOAL_PATTERN)));
             break;
         default:
             throw new IllegalArgumentException(
@@ -112,9 +122,7 @@ public class WebSearch
                 break;
 
             // Provide a status report.
-            if (DEBUG)
-                System.out.println("Nodes visited = " + nodesVisited
-                        + " |OPEN| = " + OPEN.size());
+            LOG("Nodes visited = " + nodesVisited + " |OPEN| = " + OPEN.size());
         }
 
         System.out.println(" Visited " + nodesVisited + " nodes, starting @"
@@ -131,7 +139,7 @@ public class WebSearch
     private boolean visitNode(SearchNode parent)
     {
         LOG("Visiting node at URL: " + parent.getNodeURL());
-        List<SearchNode> newChildren = parent.expandNode();
+        List<SearchNode> newChildren = parent.getChildren();
         if (parent.isGoalForPattern(GOAL_PATTERN)) {
             System.out.println("Found solution at depth " + parent.getDepth());
             parent.reportSolutionPath();
