@@ -12,8 +12,8 @@ public class SubqueryCountHeuristic extends SearchHeuristic
     }
 
     /**
-     * Calculates the heuristic based on the number of times each query component appears in the
-     * node's contents
+     * Calculates the heuristic based on the number of times each query
+     * component appears in the node's contents
      */
     @Override
     public double getHValue(SearchNode sn)
@@ -23,7 +23,8 @@ public class SubqueryCountHeuristic extends SearchHeuristic
         int subqueryIndex;
         for (String subquery : query.split(" ")) {
             do {
-                subqueryIndex = sn.getContents().indexOf(subquery, fromIndex);
+                subqueryIndex = sn.getTextContents().indexOf(subquery,
+                        fromIndex);
                 fromIndex = subqueryIndex + 1;
                 if (subqueryIndex > -1)
                     numSubqueryOccurences++;

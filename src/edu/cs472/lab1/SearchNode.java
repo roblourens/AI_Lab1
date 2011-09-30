@@ -4,6 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an action- not just a page, but the hyperlink leading to that page
+ * 
+ * @author rob
+ * 
+ */
 public class SearchNode
 {
     /**

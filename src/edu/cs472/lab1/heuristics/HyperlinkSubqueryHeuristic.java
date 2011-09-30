@@ -11,8 +11,8 @@ public class HyperlinkSubqueryHeuristic extends SearchHeuristic
     }
 
     /**
-     * Calculates the heuristic based on the number of query components appearing in the node's
-     * hypertext
+     * Calculates the heuristic based on the number of query components
+     * appearing in the node's hypertext
      */
     @Override
     public double getHValue(SearchNode sn)

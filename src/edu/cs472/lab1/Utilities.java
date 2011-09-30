@@ -134,9 +134,7 @@ public class Utilities
                 } while (!token.equalsIgnoreCase("</A>"));
 
                 links.add(new String[] { hyperlink, hypertext });
-            }
-            else
-            {
+            } else {
                 textContents.append(token);
                 textContents.append(" ");
             }

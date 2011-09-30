@@ -2,13 +2,22 @@ package edu.cs472.lab1;
 
 import java.util.Collection;
 
+/**
+ * A set of SearchNodes, which will be implemented for different search
+ * strategies
+ * 
+ * @author rob
+ * 
+ */
 public abstract class SearchNodeSet
 {
     protected Collection<SearchNode> nodes;
-    
+
     /**
      * Constructs this search node set with the provided storage Collection
-     * @param nodes Some Collection for node storage
+     * 
+     * @param nodes
+     *            Some Collection for node storage
      */
     public SearchNodeSet(Collection<SearchNode> nodes)
     {
@@ -29,12 +38,13 @@ public abstract class SearchNodeSet
     {
         return nodes.size();
     }
-    
+
     public boolean isEmpty()
     {
         return nodes.isEmpty();
     }
 
     public abstract void add(SearchNode newSN);
+
     public abstract SearchNode pop();
 }

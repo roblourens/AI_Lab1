@@ -23,7 +23,7 @@ public class SubqueryPositionHeuristic extends SearchHeuristic
     public double getHValue(SearchNode sn)
     {
         int h = 0;
-        String[] contentWords = sn.getContents().split(" ");
+        String[] contentWords = sn.getTextContents().split(" ");
         for (String subquery : query.split(" ")) {
             int location = Arrays.asList(contentWords).indexOf(subquery);
             if (location > -1) {
@@ -34,7 +34,7 @@ public class SubqueryPositionHeuristic extends SearchHeuristic
                 break;
             }
         }
-        
+
         WebSearch.LOG(sn.getNodeName() + ": " + h
                 + " SubqueryPositionHeuristic");
 

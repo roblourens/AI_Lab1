@@ -36,7 +36,7 @@ public class HypertextQuerySubsequenceHeuristic extends SearchHeuristic
                 }
             }
         }
-        
+
         WebSearch.LOG(sn.getNodeName() + ": " + h
                 + " HypertextQuerySubsequenceHeuristic");
 

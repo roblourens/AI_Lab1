@@ -6,36 +6,14 @@ import java.util.List;
 import edu.cs472.lab1.heuristics.AggregateHeuristic;
 import edu.cs472.lab1.heuristics.SearchHeuristicComparator;
 
-// You should call this code as follows:
-//
-// java WebSearch searchStrategyName
-// (or jview, in J++)
-//
-// where <searchStrategyName> is one of {breadth, depth, best, beam}.
-
-// The PARTIAL code below contains code for fetching and parsing
-// the simple web pages we're using, as well as the fragments of
-// a solution. BE SURE TO READ ALL THE COMMENTS.
-
-// Feel free to alter or discard whatever code you wish;
-// the only requirement is that your main class be called WebSearch
-// and that it accept the single argument described above
-// (if you wish you can add additional OPTIONAL arguments, but they
-// should default to the values "hardwired" in below).
-
 public class WebSearch
 {
-    SearchNodeSet OPEN; // Feel free to choose your own data structures for
-                        // searching,
-    HashSet<String> CLOSED; // and be sure to read documentation about them.
+    SearchNodeSet OPEN;
+    HashSet<String> CLOSED;
 
-    static final boolean DEBUG = true; // When set, report what's happening.
-    // WARNING: lots of info is printed.
+    static final boolean DEBUG = false;
 
-    final int BEAM_WIDTH = 2; // If searchStrategy = "beam",
-    // limit the size of OPEN to this value.
-    // The setSize() method in the Vector
-    // class can be used to accomplish this.
+    final int BEAM_WIDTH = 2;
 
     /**
      * Searching for the page with this exact String
@@ -82,7 +60,7 @@ public class WebSearch
         final String GOAL_PATTERN = "QUERY1 QUERY2 QUERY3 QUERY4";
         WebSearch ws = new WebSearch(GOAL_PATTERN, strategy);
         ws.performSearch(startURL);
-        // Utilities.waitHere("Press ENTER to exit.");
+        Utilities.waitHere("Press ENTER to exit.");
     }
 
     public WebSearch(String goalPattern, SearchStrategy searchStrategy)
@@ -105,6 +83,10 @@ public class WebSearch
         case BEST:
             OPEN = new SearchNodeSetBestFirst(new SearchHeuristicComparator(
                     new AggregateHeuristic(GOAL_PATTERN)));
+            break;
+        case BEAM:
+            OPEN = new SearchNodeSetBeam(new SearchHeuristicComparator(
+                    new AggregateHeuristic(GOAL_PATTERN)), BEAM_WIDTH);
             break;
         default:
             throw new IllegalArgumentException(
@@ -130,7 +112,8 @@ public class WebSearch
     }
 
     /**
-     * Detects goal reached, expands the node, adds node to CLOSED, adds children to OPEN if needed
+     * Detects goal reached, expands the node, adds node to CLOSED, adds
+     * children to OPEN if needed
      * 
      * @param parent
      *            the node to visit

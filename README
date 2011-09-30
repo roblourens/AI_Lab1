@@ -1,0 +1,7 @@
+README
+Rob Lourens
+
+This program can be compiled and run as described in the assignment description.
+Note that it includes a set of basic test cases. TestWebSearch will run all search strategies.
+
+In AggregateHeuristic, you can see how the four suggested heuristics are combined. Interestingly, commenting out all but SubqueryCountHeuristic will provide the best results- it is easy to comment out heuristics if you want to try. I'm not sure how well the sample data actually matches with the suggested heuristics, and none of them seem particularly effective. It's tough to beat breadth-first search on best path found first.

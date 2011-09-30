@@ -25,6 +25,7 @@ public class TestWebSearch
     @Test
     public void testBF()
     {
+        System.out.println("Running breadth-first test");
         ws = new WebSearch("QUERY1 QUERY2 QUERY3 QUERY4",
                 SearchStrategy.BREADTH);
         ws.performSearch(START);
@@ -33,14 +34,24 @@ public class TestWebSearch
     @Test
     public void testDF()
     {
+        System.out.println("Running depth-first test");
         ws = new WebSearch("QUERY1 QUERY2 QUERY3 QUERY4", SearchStrategy.DEPTH);
         ws.performSearch(START);
     }
-    
+
     @Test
     public void testBest()
     {
+        System.out.println("Running best-first test");
         ws = new WebSearch("QUERY1 QUERY2 QUERY3 QUERY4", SearchStrategy.BEST);
+        ws.performSearch(START);
+    }
+
+    @Test
+    public void testBeam()
+    {
+        System.out.println("Running beam-first test");
+        ws = new WebSearch("QUERY1 QUERY2 QUERY3 QUERY4", SearchStrategy.BEAM);
         ws.performSearch(START);
     }
 }
